@@ -33,7 +33,18 @@ class MyClass(cmd.Cmd):
     def do_uid(self, arg):
         """get the unique user identity"""
         user = uuid4()
-        print(f"User ID is {user}")
+        
+    def do_create(self, arg):
+        """Create a new file"""
+        filename = arg.strip()  # Get the filename from the argument
+        try:
+            # Attempt to open the file in write mode
+            with open(filename, 'w') as file:
+                print(f"File '{filename}' created successfully.")
+        except Exception as e:
+            print(f"Error creating file: {e}")
+
+
     def do_history(self, arg):
         """Print command history"""
         for idx, cmd in enumerate(self.history, start=1):
