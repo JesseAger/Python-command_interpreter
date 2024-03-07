@@ -1,6 +1,8 @@
 import cmd
 from uuid import uuid4
 import readline
+import os
+
 
 class MyClass(cmd.Cmd):
     prompt = "(input) > "
@@ -31,18 +33,35 @@ class MyClass(cmd.Cmd):
         """Quit the command line"""
         return True
     def do_uid(self, arg):
-        """get the unique user identity"""
+        """Get the unique user identity"""
         user = uuid4()
-        
+
     def do_create(self, arg):
         """Create a new file"""
-        filename = arg.strip()  # Get the filename from the argument
+        filename = arg.strip()  
         try:
-            # Attempt to open the file in write mode
             with open(filename, 'w') as file:
                 print(f"File '{filename}' created successfully.")
         except Exception as e:
             print(f"Error creating file: {e}")
+
+    def load_dir(self):
+        """Load the contents of the current directory into a list"""
+        try:
+            self.directory = os.listdir('.')
+        except Exception as e:
+            print(f"Error loading directory contents: {e}")
+            self.directory = []
+    
+    def do_dir(self, arg):
+        """Get the list of all files and subdirectories in the current directory"""
+        self.load_dir()  
+        if not self.directory:
+            print("No directory contents loaded.")
+            return
+        print("Directory contents:")
+        for item in self.directory:
+            print(item)
 
 
     def do_history(self, arg):
